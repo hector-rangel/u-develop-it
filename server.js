@@ -22,15 +22,36 @@ const db = mysql.createConnection(
     console.log('Connected to the election database.')
 );
 
-app.get('/', (req, res) => {
-    res.json({
-        message: 'Hello World'
-    });
+// get a signle candidate
+db.query(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
+    if (err) {
+        console.log(err);
+    }
+    console.log(row);
 });
 
-db.query(`SELECT * FROM candidates`, (err,rows) => {
-    console.log(rows);
+// Create a candidate
+const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected) VALUES (?,?,?,?)`;
+const params = [1, 'Ronald', 'Firbank', 1];
+
+db.query(sql, params, (err, result) => {
+    if (err) {
+        console.log(err);
+    }
+    console.log(result);
 });
+
+// // Delete candiate
+// db.query(`DELETE FROM candidates WHERE id = ?`, 1, (err, result) => {
+//     if (err) {
+//         console.log(err);
+//     }
+//     console.log(result);
+// });
+
+// db.query(`SELECT * FROM candidates`, (err,rows) => {
+//     console.log(rows);
+// });
 
 // Default response for any other request (not found)
 app.use((req, res) => {
